@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jasmine-2.8.0">
+
+    <script src="jasmine-2.8.0/lib/jasmine-core/jasmine.js"></script>
+    <script src="jasmine-2.8.0/lib/jasmine-core/jasmine-html.js"></script>
+    <script src="jasmine-2.8.0/lib/jasmine-core/boot/boot.js"></script>
+</head>
+<body>
+
+<a href="#" onclick="get1()" >发送get1请求</a>
+
+</body>
+
+<script>
+    function get1() {
+        $.getJSON("http://localhost:8080/test/get1").then(
+            function (result) {
+                console.log(result);
+            }
+        )
+
+    }
+    // 每一个测试用例的超时时间
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
+
+
+    // 请求的接口的前缀
+    var base = "http://localhost:8080/test";
+
+    // 测试模块
+    describe("hzyice ajax跨域讲解", function() {
+        // 测试方法
+        it("get1请求", function(done) {
+            // 服务器返回结果
+            var result;
+
+            $.getJSON(base + "/get1").then(function (jsonObj) {
+                result = jsonObj;
+            })
+
+            // 因为是异步请求，需要使用setTimeOut来校验数据
+            setTimeout(function () {
+                expect(result).toEqual({
+                    "data": "get1 OK"
+                });
+            })
+
+            // 校验完成通知jasmine框架
+        });
+    }, 100);
+
+
+</script>
+</html>
